@@ -1,0 +1,86 @@
+/* Restraint is the whole point: chrome recedes, data is the brightest thing
+   on screen, and only one accent colour is ever spent at a time. */
+
+Screen {
+    background: $background;
+}
+
+#grid {
+    height: 1fr;
+    padding: 0;
+}
+
+#core-panel {
+    width: 30;
+    min-width: 22;
+}
+
+#panel-projects {
+    width: 2fr;
+    min-width: 44;
+}
+
+#panel-launchpad {
+    width: 1fr;
+    min-width: 30;
+}
+
+/* ---- tables ---------------------------------------------------------- */
+/* No zebra, no filled header bar, no bright cursor. Column heads are dim
+   tracked caps; the rows carry the signal. */
+
+DataTable {
+    height: 1fr;
+    background: transparent;
+    color: $foreground;
+}
+
+DataTable > .datatable--header {
+    background: transparent;
+    color: $foreground 40%;
+    text-style: none;
+}
+
+DataTable > .datatable--cursor {
+    background: $primary 22%;
+    color: $foreground;
+    text-style: none;
+}
+
+DataTable > .datatable--hover {
+    background: $primary 10%;
+}
+
+/* ---- detail pane ----------------------------------------------------- */
+
+#app-detail {
+    color: $foreground 85%;
+    background: transparent;
+}
+
+/* ---- core column ----------------------------------------------------- */
+
+CoreReadout Digits {
+    color: $foreground 75%;
+}
+
+/* ---- chrome ---------------------------------------------------------- */
+
+Footer {
+    background: $background;
+    color: $foreground 45%;
+}
+
+Footer > .footer-key--key {
+    background: $background;
+    color: $accent;
+}
+
+Footer > .footer-key--description {
+    background: $background;
+}
+
+Toast {
+    background: $panel;
+    border: solid $primary;
+}

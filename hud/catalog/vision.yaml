@@ -1,0 +1,56 @@
+# Cameras, depth sensors, and machine vision SDKs.
+
+- id: realsense
+  name: REALSENSE
+  glyph: "◉"
+  detect: { which: realsense-viewer }
+  launch: { exec: [realsense-viewer] }
+  inspect:
+    - { label: DEVICES, exec: [rs-enumerate-devices, "-s"], parse: lines, max: 5,
+        empty: "no devices" }
+
+- id: zed
+  name: ZED
+  glyph: "◎"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/ZED Explorer.app }
+      launch: { open: /Applications/ZED Explorer.app }
+    linux:
+      detect: { which: ZED_Explorer }
+      launch: { exec: [ZED_Explorer] }
+
+- id: pylon
+  name: BASLER PYLON
+  glyph: "◧"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/pylon Viewer.app" }
+      launch: { open: "/Applications/pylon Viewer.app" }
+    linux:
+      detect: { which: pylonviewer }
+
+- id: spinview
+  name: FLIR SPINVIEW
+  glyph: "◨"
+  detect: { which: SpinView }
+  launch: { exec: [SpinView] }
+
+- id: opencv
+  name: OPENCV
+  glyph: "▣"
+  detect: { which: opencv_version }
+  inspect:
+    - { label: VERSION, exec: [opencv_version], parse: first }
+
+- id: ffmpeg
+  name: FFMPEG
+  glyph: "⏵"
+  detect: { which: ffmpeg }
+  inspect:
+    - { label: VERSION, exec: [ffmpeg, "-version"], parse: first }
+    - label: DEVICES
+      exec: [ffmpeg, "-f", avfoundation, "-list_devices", "true", "-i", ""]
+      parse: lines
+      max: 6
+      empty: "none"

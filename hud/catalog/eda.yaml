@@ -1,0 +1,86 @@
+# EDA / electronics design and bench instruments.
+
+- id: kicad
+  name: KICAD
+  glyph: "⏦"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/KiCad/KiCad.app }
+      launch: { open: /Applications/KiCad/KiCad.app }
+      inspect:
+        - label: VERSION
+          exec: [/Applications/KiCad/KiCad.app/Contents/MacOS/kicad-cli, version]
+          parse: first
+    linux:
+      detect: { which: kicad }
+      launch: { exec: [kicad] }
+      inspect:
+        - { label: VERSION, exec: [kicad-cli, version], parse: first }
+    windows:
+      detect: { path: "C:/Program Files/KiCad/9.0/bin/kicad.exe" }
+      launch: { exec: ["C:/Program Files/KiCad/9.0/bin/kicad.exe"] }
+
+- id: altium
+  name: ALTIUM
+  glyph: "⊞"
+  platforms:
+    windows:
+      detect: { process: "DXP" }
+
+- id: ltspice
+  name: LTSPICE
+  glyph: "∿"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/LTspice.app }
+      launch: { open: /Applications/LTspice.app }
+    windows:
+      detect: { process: LTspice }
+
+- id: ngspice
+  name: NGSPICE
+  glyph: "∼"
+  detect: { which: ngspice }
+  launch: { exec: [ngspice] }
+  inspect:
+    - { label: VERSION, exec: [ngspice, --version], parse: first }
+
+- id: saleae
+  name: SALEAE LOGIC
+  glyph: "⌸"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Logic2.app" }
+      launch: { open: "/Applications/Logic2.app" }
+    linux:
+      detect: { which: Logic }
+
+- id: pulseview
+  name: PULSEVIEW
+  glyph: "⎍"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/PulseView.app }
+      launch: { open: /Applications/PulseView.app }
+    linux:
+      detect: { which: pulseview }
+      launch: { exec: [pulseview] }
+
+- id: sigrok
+  name: SIGROK-CLI
+  glyph: "⌁"
+  detect: { which: sigrok-cli }
+  launch: { exec: [sigrok-cli, --version] }
+  inspect:
+    - { label: DEVICES, exec: [sigrok-cli, --scan], parse: lines, max: 5,
+        empty: "no devices" }
+
+- id: picoscope
+  name: PICOSCOPE
+  glyph: "⏥"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/PicoScope 7.app }
+      launch: { open: /Applications/PicoScope 7.app }
+    windows:
+      detect: { process: PicoScope }

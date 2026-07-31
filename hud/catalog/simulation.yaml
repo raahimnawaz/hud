@@ -1,0 +1,69 @@
+# CAE / FEA / CFD.
+#
+# Most of these are Linux/Windows workstation tools. On a Mac they will read as
+# absent, which is correct — they belong on a remote target.
+
+- id: ansys
+  name: ANSYS
+  glyph: "⏢"
+  platforms:
+    windows:
+      detect: { process: AnsysWBU }
+    linux:
+      detect: { which: runwb2 }
+
+- id: comsol
+  name: COMSOL
+  glyph: "⌼"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/COMSOL62/Multiphysics/COMSOL Multiphysics.app" }
+      launch: { open: "/Applications/COMSOL62/Multiphysics/COMSOL Multiphysics.app" }
+    linux:
+      detect: { which: comsol }
+      launch: { exec: [comsol] }
+
+- id: abaqus
+  name: ABAQUS
+  glyph: "▩"
+  detect: { which: abaqus }
+  inspect:
+    - { label: VERSION, exec: [abaqus, information=version], parse: first }
+
+- id: openfoam
+  name: OPENFOAM
+  glyph: "≋"
+  detect: { which: simpleFoam }
+  inspect:
+    - { label: VERSION, exec: [blockMesh, "-help"], parse: first }
+
+- id: paraview
+  name: PARAVIEW
+  glyph: "◲"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/ParaView.app }
+      launch: { open: /Applications/ParaView.app }
+    linux:
+      detect: { which: paraview }
+      launch: { exec: [paraview] }
+
+- id: su2
+  name: SU2
+  glyph: "⌁"
+  detect: { which: SU2_CFD }
+  inspect:
+    - { label: VERSION, exec: [SU2_CFD, "--help"], parse: first }
+
+- id: gmsh
+  name: GMSH
+  glyph: "⌗"
+  detect: { which: gmsh }
+  launch: { exec: [gmsh] }
+  inspect:
+    - { label: VERSION, exec: [gmsh, "--version"], parse: first }
+
+- id: starccm
+  name: STAR-CCM+
+  glyph: "✧"
+  detect: { which: starccm+ }

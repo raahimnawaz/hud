@@ -1,0 +1,92 @@
+# Network, bus, and protocol analysis.
+#
+# CAN tooling is included because vehicle and robotics work lives on it as much
+# as on Ethernet.
+
+- id: wireshark
+  name: WIRESHARK
+  glyph: "◭"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Wireshark.app }
+      launch: { open: /Applications/Wireshark.app }
+      inspect:
+        - label: INTERFACES
+          exec: [/Applications/Wireshark.app/Contents/MacOS/tshark, -D]
+          parse: lines
+          max: 8
+    linux:
+      detect: { which: wireshark }
+      launch: { exec: [wireshark] }
+      inspect:
+        - { label: INTERFACES, exec: [tshark, -D], parse: lines, max: 8 }
+    windows:
+      detect: { path: "C:/Program Files/Wireshark/Wireshark.exe" }
+      launch: { exec: ["C:/Program Files/Wireshark/Wireshark.exe"] }
+
+- id: tshark
+  name: TSHARK
+  glyph: "⌁"
+  detect: { which: tshark }
+  launch: { exec: [tshark, -D] }
+  inspect:
+    - { label: VERSION, exec: [tshark, --version], parse: first }
+
+- id: tcpdump
+  name: TCPDUMP
+  glyph: "⌥"
+  detect: { which: tcpdump }
+  inspect:
+    - { label: VERSION, exec: [tcpdump, --version], parse: first }
+
+- id: nmap
+  name: NMAP
+  glyph: "⌘"
+  detect: { which: nmap }
+  inspect:
+    - { label: VERSION, exec: [nmap, --version], parse: first }
+
+- id: cansend
+  name: CAN-UTILS
+  glyph: "⇄"
+  # Linux SocketCAN. On macOS a USB-CAN adapter's own tooling replaces this.
+  detect: { which: candump }
+  inspect:
+    - { label: INTERFACES, exec: [ip, "-br", link, show, type, can],
+        parse: lines, max: 4, empty: "no can interfaces" }
+
+- id: savvycan
+  name: SAVVYCAN
+  glyph: "⇅"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/SavvyCAN.app }
+      launch: { open: /Applications/SavvyCAN.app }
+    linux:
+      detect: { which: SavvyCAN }
+
+- id: postman
+  name: POSTMAN
+  glyph: "◰"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Postman.app }
+      launch: { open: /Applications/Postman.app }
+    linux:
+      detect: { which: postman }
+
+- id: tailscale
+  name: TAILSCALE
+  glyph: "⌸"
+  detect: { which: tailscale }
+  inspect:
+    - { label: STATUS, exec: [tailscale, status, "--peers=false"], parse: lines,
+        max: 3, empty: "not connected" }
+    - { label: IP, exec: [tailscale, ip, "-4"], parse: first }
+
+- id: mosquitto
+  name: MQTT
+  glyph: "◈"
+  detect: { which: mosquitto_sub }
+  inspect:
+    - { label: VERSION, exec: [mosquitto_sub, "--help"], parse: first }

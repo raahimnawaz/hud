@@ -1,0 +1,64 @@
+# Numerical computing and modelling environments.
+
+- id: matlab
+  name: MATLAB
+  glyph: "∑"
+  platforms:
+    macos:
+      # The version is in the bundle name, so `which` on the CLI symlink is
+      # the version-independent detector.
+      detect: { which: matlab }
+      launch: { exec: [matlab, -desktop] }
+      inspect:
+        - { label: VERSION, exec: [matlab, -batch, "disp(version)"], parse: first,
+            timeout: 20 }
+    linux:
+      detect: { which: matlab }
+      launch: { exec: [matlab, -desktop] }
+    windows:
+      detect: { process: MATLAB }
+
+- id: octave
+  name: OCTAVE
+  glyph: "∮"
+  detect: { which: octave }
+  launch: { exec: [octave, --gui] }
+  inspect:
+    - { label: VERSION, exec: [octave, --version], parse: first }
+
+- id: mathematica
+  name: MATHEMATICA
+  glyph: "✳"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Mathematica.app }
+      launch: { open: /Applications/Mathematica.app }
+    linux:
+      detect: { which: mathematica }
+
+- id: labview
+  name: LABVIEW
+  glyph: "⌸"
+  platforms:
+    macos:
+      detect: { process: LabVIEW }
+    windows:
+      detect: { process: LabVIEW }
+
+- id: julia
+  name: JULIA
+  glyph: "◉"
+  detect: { which: julia }
+  launch: { exec: [julia] }
+  inspect:
+    - { label: VERSION, exec: [julia, --version], parse: first }
+
+- id: rstudio
+  name: RSTUDIO
+  glyph: "◫"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/RStudio.app }
+      launch: { open: /Applications/RStudio.app }
+    linux:
+      detect: { which: rstudio }

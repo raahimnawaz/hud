@@ -1,0 +1,100 @@
+# Embedded, firmware, and debug probes.
+
+- id: arduino
+  name: ARDUINO IDE
+  glyph: "∞"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Arduino IDE.app" }
+      launch: { open: "/Applications/Arduino IDE.app" }
+    linux:
+      detect: { which: arduino-ide }
+      launch: { exec: [arduino-ide] }
+
+- id: arduino-cli
+  name: ARDUINO CLI
+  glyph: "∾"
+  detect: { which: arduino-cli }
+  inspect:
+    - { label: BOARDS, exec: [arduino-cli, board, list], parse: lines, max: 6,
+        empty: "no boards attached" }
+    - { label: VERSION, exec: [arduino-cli, version], parse: first }
+
+- id: platformio
+  name: PLATFORMIO
+  glyph: "⊛"
+  detect: { which: pio }
+  inspect:
+    - { label: DEVICES, exec: [pio, device, list], parse: lines, max: 6,
+        empty: "no devices" }
+    - { label: VERSION, exec: [pio, "--version"], parse: first }
+
+- id: stm32cubeide
+  name: STM32CUBEIDE
+  glyph: "▣"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/STM32CubeIDE.app }
+      launch: { open: /Applications/STM32CubeIDE.app }
+    linux:
+      detect: { which: stm32cubeide }
+      launch: { exec: [stm32cubeide] }
+    windows:
+      detect: { process: stm32cubeide }
+
+- id: stm32prog
+  name: STM32 PROG
+  glyph: "▨"
+  detect: { which: STM32_Programmer_CLI }
+  inspect:
+    - { label: VERSION, exec: [STM32_Programmer_CLI, "--version"], parse: first }
+
+- id: openocd
+  name: OPENOCD
+  glyph: "⊟"
+  detect: { which: openocd }
+  inspect:
+    - { label: VERSION, exec: [openocd, "--version"], parse: first }
+
+- id: jlink
+  name: J-LINK
+  glyph: "⌸"
+  detect: { which: JLinkExe }
+  inspect:
+    - { label: VERSION, exec: [JLinkExe, "-?"], parse: first }
+
+- id: ozone
+  name: OZONE
+  glyph: "◫"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Ozone.app }
+      launch: { open: /Applications/Ozone.app }
+    linux:
+      detect: { which: Ozone }
+
+- id: espidf
+  name: ESP-IDF
+  glyph: "⌾"
+  detect: { which: idf.py }
+  inspect:
+    - { label: VERSION, exec: [idf.py, "--version"], parse: first }
+
+- id: probe-rs
+  name: PROBE-RS
+  glyph: "⌁"
+  detect: { which: probe-rs }
+  inspect:
+    - { label: PROBES, exec: [probe-rs, list], parse: lines, max: 5,
+        empty: "no probes" }
+
+- id: renode
+  name: RENODE
+  glyph: "⎔"
+  detect: { which: renode }
+  launch: { exec: [renode] }
+
+- id: minicom
+  name: SERIAL
+  glyph: "⌇"
+  detect: { which: minicom }

@@ -1,0 +1,140 @@
+# Editors, containers, databases, and version control.
+
+- id: vscode
+  name: VS CODE
+  glyph: "❯"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Visual Studio Code.app" }
+      launch: { open: "/Applications/Visual Studio Code.app" }
+      inspect:
+        - label: VERSION
+          exec: ["/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",
+                 "--version"]
+          parse: first
+          timeout: 25
+        - label: EXTENSIONS
+          exec: ["/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",
+                 "--list-extensions"]
+          parse: count
+          timeout: 25
+    linux:
+      detect: { which: code }
+      launch: { exec: [code] }
+      inspect:
+        - { label: VERSION, exec: [code, "--version"], parse: first }
+
+- id: cursor
+  name: CURSOR
+  glyph: "➤"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Cursor.app }
+      launch: { open: /Applications/Cursor.app }
+    linux:
+      detect: { which: cursor }
+
+- id: xcode
+  name: XCODE
+  glyph: "⌘"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Xcode.app }
+      launch: { open: /Applications/Xcode.app }
+      inspect:
+        - { label: VERSION, exec: [xcodebuild, -version], parse: first, timeout: 25 }
+        - { label: SIMULATORS, exec: [xcrun, simctl, list, devices, booted],
+            parse: lines, max: 4, empty: "none booted" }
+
+- id: androidstudio
+  name: ANDROID STUDIO
+  glyph: "▲"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Android Studio.app" }
+      launch: { open: "/Applications/Android Studio.app" }
+    linux:
+      detect: { which: studio.sh }
+
+- id: docker
+  name: DOCKER
+  glyph: "▤"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Docker.app }
+      launch: { open: /Applications/Docker.app }
+      inspect: &docker_inspect
+        # With the daemon down these show a dim note rather than an error —
+        # an unstarted daemon is a normal state, not a fault.
+        - label: CONTAINERS
+          exec: [docker, ps, "--format", "{{.Names}}  {{.Status}}"]
+          parse: lines
+          max: 6
+          empty: "none running"
+        - { label: IMAGES, exec: [docker, images, "-q"], parse: count }
+        - label: DISK
+          exec: [docker, system, df, "--format", "{{.Type}}: {{.Size}}"]
+          parse: lines
+          max: 4
+    linux:
+      detect: { which: docker }
+      launch: { exec: [docker, info] }
+      inspect: *docker_inspect
+
+- id: orbstack
+  name: ORBSTACK
+  glyph: "◲"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/OrbStack.app }
+      launch: { open: /Applications/OrbStack.app }
+      inspect:
+        - { label: MACHINES, exec: [orb, list], parse: lines, max: 5,
+            empty: "none" }
+
+- id: podman
+  name: PODMAN
+  glyph: "◱"
+  detect: { which: podman }
+  inspect:
+    - { label: CONTAINERS, exec: [podman, ps, "--format", "{{.Names}} {{.Status}}"],
+        parse: lines, max: 6, empty: "none running" }
+
+- id: kubectl
+  name: KUBERNETES
+  glyph: "⎈"
+  detect: { which: kubectl }
+  inspect:
+    - { label: CONTEXT, exec: [kubectl, config, current-context], parse: first }
+    - { label: NODES, exec: [kubectl, get, nodes, "--no-headers"], parse: lines,
+        max: 5, empty: "no cluster" }
+
+- id: github
+  name: GITHUB DESKTOP
+  glyph: "◐"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/GitHub Desktop.app" }
+      launch: { open: "/Applications/GitHub Desktop.app" }
+
+- id: gh
+  name: GH CLI
+  glyph: "◑"
+  detect: { which: gh }
+  inspect:
+    - { label: AUTH, exec: [gh, auth, status], parse: lines, max: 4 }
+
+- id: tableplus
+  name: TABLEPLUS
+  glyph: "▦"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/TablePlus.app }
+      launch: { open: /Applications/TablePlus.app }
+
+- id: postgres
+  name: POSTGRES
+  glyph: "◍"
+  detect: { which: psql }
+  inspect:
+    - { label: VERSION, exec: [psql, "--version"], parse: first }

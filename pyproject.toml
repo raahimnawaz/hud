@@ -1,0 +1,52 @@
+[project]
+name = "hud-console"
+version = "0.2.0"
+description = "A systems console for engineering work: project workspaces, live process telemetry, and direct KiCad BOM extraction, in the terminal"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+keywords = ["tui", "textual", "kicad", "bom", "docker", "ros2", "robotics", "console"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console :: Curses",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+    "Topic :: System :: Monitoring",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "textual>=1.0",
+    "psutil>=6.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+hud = "hud.__main__:main"
+
+# Third-party plugins register here and are discovered at startup; a broken one
+# is skipped rather than taking the console down. See hud/core/registry.py.
+[project.entry-points."hud.plugins"]
+
+[project.optional-dependencies]
+dev = ["textual-dev>=1.7", "pytest>=8.0", "pytest-asyncio>=0.24"]
+
+[project.urls]
+Homepage = "https://github.com/raahimnawaz/hud"
+Issues = "https://github.com/raahimnawaz/hud/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# The catalogue ships inside the package so a `uvx hud-console` install has the
+# full ~90-tool inventory without cloning the repo.
+packages = ["hud"]
+artifacts = ["hud/catalog/*.yaml"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

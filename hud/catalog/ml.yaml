@@ -1,0 +1,73 @@
+# ML, data, and training infrastructure.
+
+- id: jupyter
+  name: JUPYTER
+  glyph: "◔"
+  detect: { which: jupyter }
+  launch: { exec: [jupyter, lab] }
+  inspect:
+    - { label: SERVERS, exec: [jupyter, server, list], parse: lines, max: 5,
+        empty: "none running" }
+
+- id: tensorboard
+  name: TENSORBOARD
+  glyph: "⌸"
+  detect: { which: tensorboard }
+  launch: { exec: [tensorboard, "--logdir", "."] }
+
+- id: mlflow
+  name: MLFLOW
+  glyph: "◵"
+  detect: { which: mlflow }
+  launch: { exec: [mlflow, ui] }
+  inspect:
+    - { label: VERSION, exec: [mlflow, "--version"], parse: first }
+
+- id: wandb
+  name: W&B
+  glyph: "◶"
+  detect: { which: wandb }
+  inspect:
+    - { label: STATUS, exec: [wandb, status], parse: lines, max: 4 }
+
+- id: netron
+  name: NETRON
+  glyph: "⌘"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Netron.app }
+      launch: { open: /Applications/Netron.app }
+    linux:
+      detect: { which: netron }
+      launch: { exec: [netron] }
+
+- id: ollama
+  name: OLLAMA
+  glyph: "◐"
+  detect: { which: ollama }
+  inspect:
+    - { label: RUNNING, exec: [ollama, ps], parse: lines, max: 5,
+        empty: "no models loaded" }
+    - { label: MODELS, exec: [ollama, list], parse: count }
+
+
+- id: labelstudio
+  name: LABEL STUDIO
+  glyph: "▦"
+  detect: { which: label-studio }
+  launch: { exec: [label-studio] }
+
+- id: nvidia-smi
+  name: GPU
+  glyph: "▮"
+  # Linux/Windows only — Apple Silicon has no nvidia-smi equivalent, so this
+  # correctly reads as absent on a Mac.
+  detect: { which: nvidia-smi }
+  inspect:
+    - label: GPUS
+      exec: [nvidia-smi, "--query-gpu=name,utilization.gpu,memory.used,memory.total",
+             "--format=csv,noheader"]
+      parse: lines
+      max: 4
+    - { label: PROCESSES, exec: [nvidia-smi, "--query-compute-apps=pid,used_memory",
+        "--format=csv,noheader"], parse: lines, max: 5, empty: "idle" }

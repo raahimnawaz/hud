@@ -1,0 +1,95 @@
+# CAD / mechanical design.
+#
+# Paths vary by version and install location. A miss just means the app shows
+# as "absent" (hidden by default), so a wrong guess here is harmless — fix the
+# path in ~/.config/hud/apps.yaml using the same id to override an entry.
+
+- id: fusion
+  name: FUSION
+  glyph: "◍"
+  platforms:
+    macos:
+      # Fusion installs per-user, not into /Applications, and the folder name
+      # carries no version — matching the process is more reliable.
+      detect: { process: "Autodesk Fusion", app_name: "Autodesk Fusion" }
+      launch: { open: "~/Applications/Autodesk Fusion.app" }
+    windows:
+      detect: { process: "Fusion360" }
+
+- id: autocad
+  name: AUTOCAD
+  glyph: "⌗"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Autodesk/AutoCAD 2026/AutoCAD 2026.app" }
+      launch: { open: "/Applications/Autodesk/AutoCAD 2026/AutoCAD 2026.app" }
+    windows:
+      detect: { process: "acad" }
+
+- id: inventor
+  name: INVENTOR
+  glyph: "⎔"
+  platforms:
+    windows:
+      detect: { process: "Inventor" }
+
+- id: solidworks
+  name: SOLIDWORKS
+  glyph: "⏣"
+  platforms:
+    windows:
+      detect: { process: "SLDWORKS" }
+
+- id: freecad
+  name: FREECAD
+  glyph: "⬡"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/FreeCAD.app }
+      launch: { open: /Applications/FreeCAD.app }
+    linux:
+      detect: { which: freecad }
+      launch: { exec: [freecad] }
+    windows:
+      detect: { process: FreeCAD }
+
+- id: onshape
+  name: ONSHAPE
+  glyph: "◌"
+  detect: { always: true }
+  launch: { url: "https://cad.onshape.com/documents" }
+
+- id: rhino
+  name: RHINO
+  glyph: "⟐"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Rhino 8.app }
+      launch: { open: /Applications/Rhino 8.app }
+    windows:
+      detect: { process: Rhino }
+
+- id: shapr3d
+  name: SHAPR3D
+  glyph: "◇"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Shapr3D.app }
+      launch: { open: /Applications/Shapr3D.app }
+
+- id: blender
+  name: BLENDER
+  glyph: "⬢"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Blender.app }
+      launch: { open: /Applications/Blender.app }
+      inspect:
+        - label: VERSION
+          exec: [/Applications/Blender.app/Contents/MacOS/Blender, --version]
+          parse: first
+    linux:
+      detect: { which: blender }
+      launch: { exec: [blender] }
+      inspect:
+        - { label: VERSION, exec: [blender, --version], parse: first }

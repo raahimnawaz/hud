@@ -1,0 +1,110 @@
+# Robotics, simulation, and ROS tooling.
+#
+# Note on Isaac Sim: it requires an RTX GPU and has never had an Apple Silicon
+# build, so on a Mac it is inherently a remote target. The entry below detects
+# a local Linux/Windows install; to drive it on another machine, add that host
+# to hosts.toml once SSH targets are wired up.
+
+- id: webots
+  name: WEBOTS
+  glyph: "◈"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Webots.app }
+      launch: { open: /Applications/Webots.app }
+      actions:
+        - key: c
+          title: "Run controller"
+          exec: ["/Applications/Webots.app/Contents/MacOS/webots-controller"]
+      inspect:
+        - label: VERSION
+          exec: [/Applications/Webots.app/Contents/MacOS/webots, --version]
+          parse: first
+    linux:
+      detect: { which: webots }
+      launch: { exec: [webots] }
+      inspect:
+        - { label: VERSION, exec: [webots, --version], parse: first }
+
+- id: gazebo
+  name: GAZEBO
+  glyph: "◉"
+  detect: { which: gz }
+  launch: { exec: [gz, sim] }
+  inspect:
+    - { label: VERSION, exec: [gz, --version], parse: first }
+    - { label: TOPICS, exec: [gz, topic, -l], parse: lines, max: 6,
+        empty: "no sim running" }
+
+- id: isaacsim
+  name: ISAAC SIM
+  glyph: "✦"
+  platforms:
+    linux:
+      detect: { which: isaac-sim.sh }
+      launch: { exec: [isaac-sim.sh] }
+    windows:
+      detect: { process: "isaac-sim" }
+
+- id: coppeliasim
+  name: COPPELIASIM
+  glyph: "⊙"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/coppeliaSim.app }
+      launch: { open: /Applications/coppeliaSim.app }
+    linux:
+      detect: { which: coppeliaSim }
+      launch: { exec: [coppeliaSim] }
+
+- id: mujoco
+  name: MUJOCO
+  glyph: "⌬"
+  detect: { which: simulate }
+  launch: { exec: [simulate] }
+
+- id: ros2
+  name: ROS 2
+  glyph: "⎈"
+  detect: { which: ros2 }
+  launch: { exec: [ros2] }
+  inspect:
+    # These only return anything with a sourced workspace and a live graph;
+    # otherwise they show a dim note, which is itself useful information.
+    - { label: NODES, exec: [ros2, node, list], parse: lines, max: 8,
+        empty: "no nodes" }
+    - { label: TOPICS, exec: [ros2, topic, list], parse: count }
+    - { label: DAEMON, exec: [ros2, daemon, status], parse: first }
+
+- id: rviz2
+  name: RVIZ2
+  glyph: "⌗"
+  detect: { which: rviz2 }
+  launch: { exec: [rviz2] }
+
+- id: foxglove
+  name: FOXGLOVE
+  glyph: "◧"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/Foxglove.app" }
+      launch: { open: "/Applications/Foxglove.app" }
+    linux:
+      detect: { which: foxglove-studio }
+      launch: { exec: [foxglove-studio] }
+
+- id: plotjuggler
+  name: PLOTJUGGLER
+  glyph: "⌇"
+  detect: { which: plotjuggler }
+  launch: { exec: [plotjuggler] }
+
+- id: qgroundcontrol
+  name: QGROUNDCONTROL
+  glyph: "⌖"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/QGroundControl.app }
+      launch: { open: /Applications/QGroundControl.app }
+    linux:
+      detect: { which: QGroundControl }

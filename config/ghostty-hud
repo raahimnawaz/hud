@@ -1,0 +1,39 @@
+# Ghostty profile for the HUD only.
+#
+# A separate config file means these settings apply to the control panel and
+# nothing else — your everyday terminal stays untouched.
+#
+# Launched via:  ghostty --config-file=~/.config/ghostty/hud -e <hud binary>
+#
+# NO SHADER, deliberately. The look here is modern, not retro: crisp text, flat
+# panels, high contrast, one accent. A CRT treatment — scanlines, curvature,
+# phosphor bloom, chromatic aberration — is the opposite of that, and it
+# actively hurts the dense tables this HUD is mostly made of. The aesthetic
+# comes from the TUI's own palette and chrome and needs no GPU help.
+#
+# Also NOT set here: `window-decoration = false`. Combined with macOS window
+# tabbing it crashes Ghostty 1.3.1 outright — AppKit tries to build a tab bar
+# for a window with no titlebar to hang it on:
+#   NSInternalInconsistencyException: titlebarAccessoryViewControllers
+#   not supported for this window style
+# Keeping the titlebar costs one row and avoids a hard crash.
+
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 13
+font-thicken = true
+
+# lattice palette — matches the HUD's default theme.
+background = #0a0b0c
+foreground = #b6bec7
+cursor-color = #e0873c
+selection-background = #e0873c
+selection-foreground = #0a0b0c
+
+window-padding-x = 10
+window-padding-y = 8
+window-padding-balance = true
+
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+confirm-close-surface = false

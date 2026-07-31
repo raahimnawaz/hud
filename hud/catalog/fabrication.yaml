@@ -1,0 +1,63 @@
+# Slicers, CAM, and shop-floor tooling.
+
+- id: prusaslicer
+  name: PRUSASLICER
+  glyph: "▲"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/PrusaSlicer.app }
+      launch: { open: /Applications/PrusaSlicer.app }
+    linux:
+      detect: { which: prusa-slicer }
+      launch: { exec: [prusa-slicer] }
+
+- id: bambustudio
+  name: BAMBU STUDIO
+  glyph: "◮"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/BambuStudio.app" }
+      launch: { open: "/Applications/BambuStudio.app" }
+    linux:
+      detect: { which: bambu-studio }
+
+- id: orcaslicer
+  name: ORCASLICER
+  glyph: "◭"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/OrcaSlicer.app }
+      launch: { open: /Applications/OrcaSlicer.app }
+    linux:
+      detect: { which: orca-slicer }
+
+- id: cura
+  name: CURA
+  glyph: "◬"
+  platforms:
+    macos:
+      detect: { bundle: "/Applications/UltiMaker Cura.app" }
+      launch: { open: "/Applications/UltiMaker Cura.app" }
+    linux:
+      detect: { which: cura }
+
+
+- id: candle
+  name: CANDLE GRBL
+  glyph: "⌗"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/Candle.app }
+      launch: { open: /Applications/Candle.app }
+    linux:
+      detect: { which: candle }
+
+- id: lightburn
+  name: LIGHTBURN
+  glyph: "✷"
+  platforms:
+    macos:
+      detect: { bundle: /Applications/LightBurn.app }
+      launch: { open: /Applications/LightBurn.app }
+    linux:
+      detect: { which: LightBurn }
