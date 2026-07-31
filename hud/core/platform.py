@@ -11,6 +11,7 @@ real hosts.
 
 from __future__ import annotations
 
+import shutil
 import sys
 from dataclasses import dataclass
 from typing import Literal, Protocol, runtime_checkable
@@ -38,6 +39,20 @@ class Platform(Protocol):
     def kill_app(self, pid: int, name: str) -> Action: ...
     def open_path(self, path: str) -> Action: ...
     def reveal(self, path: str) -> Action: ...
+    def open_url(self, url: str) -> Action: ...
+    def open_in_editor(self, path: str, editor: str | None) -> Action: ...
+    def terminal(self, cwd: str, command: str | None) -> Action: ...
+
+
+def _editor_argv(path: str, editor: str | None) -> list[str] | None:
+    """Prefer a CLI editor on PATH — it is the one form that works identically
+    on all three platforms. Returns None when there is nothing to use, letting
+    each platform fall back to its own document-opening mechanism.
+    """
+    for candidate in ([editor] if editor else []) + ["code", "cursor", "subl", "zed"]:
+        if candidate and (found := shutil.which(candidate)):
+            return [found, path]
+    return None
 
 
 @dataclass(frozen=True)
